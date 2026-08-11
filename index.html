@@ -112,6 +112,24 @@ main{
     opacity:.8;
 }
 
+.comments{
+    margin-top:48px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+}
+
+.comments h2{
+    margin:0 0 18px;
+    color:var(--text);
+    font:700 16px var(--mono);
+}
+
+.comments p{
+    margin:0 0 18px;
+    color:var(--dim);
+    font:12px var(--mono);
+}
+
 footer{
     padding:32px 24px 48px;
     color:var(--dim);
@@ -167,6 +185,27 @@ footer{
 <main>
     <p class="status" id="status">Loading artwork...</p>
     <div class="gallery" id="gallery"></div>
+
+    <section class="comments">
+        <h2>Comments</h2>
+        <p>Leave a comment or share your thoughts.</p>
+
+        <script src="https://giscus.app/client.js"
+                data-repo="Mahyar132/Comments"
+                data-repo-id="R_kgDOT1krlw"
+                data-category="Announcements"
+                data-category-id="DIC_kwDOT1krl84DDKhg"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="preferred_color_scheme"
+                data-lang="en"
+                crossorigin="anonymous"
+                async>
+        </script>
+    </section>
 </main>
 
 <footer>
