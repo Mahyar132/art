@@ -1,6 +1,6 @@
 # Isotope Gallery
 
-A collection of artwork and visual experiments by Mahyar132.
+A collection of artwork and visual experiments by Varen (Mahyar).
 
 ## License
 
@@ -12,7 +12,7 @@ The code in `index.html`, including the HTML, CSS, and JavaScript, is licensed u
 
 Copyright © 2026 Mahyar132.
 
-See [`LICENSE`](LICENSE) for the full license text.
+See `LICENSE` for the full license text.
 
 ### Artwork
 
@@ -22,6 +22,6 @@ Copyright © 2026 Mahyar132.
 
 You are free to share and adapt the artwork, including for commercial purposes, provided that appropriate attribution is given.
 
-See [`LICENSE-ART`](LICENSE-ART) for the full artwork license and attribution terms.
+See [`LICENSE-ART`](LICENSE-ART) for additional information about the artwork license.
 
-**CC BY 4.0:** https://creativecommons.org/licenses/by/4.0/
+**Official CC BY 4.0 license:** https://creativecommons.org/licenses/by/4.0/
