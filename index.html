@@ -64,20 +64,20 @@
                 border-bottom: 1px solid var(--line);
             }
 
-            nav a.active {
-                background: #007bff;
-                border-color: #007bff;
-                color: #fff;
-            }
-
             nav ul {
                 display: flex;
                 gap: 6px;
                 max-width: 1000px;
                 margin: auto;
                 padding: 10px 24px;
-                overflow: auto;
+                overflow-x: auto;
+                overflow-y: hidden;
                 list-style: none;
+                scrollbar-width: none;
+            }
+
+            nav ul::-webkit-scrollbar {
+                display: none;
             }
 
             nav a {
@@ -91,9 +91,23 @@
                 white-space: nowrap;
             }
 
+            nav a:visited {
+                color: var(--dim);
+            }
+
             nav a:hover {
                 color: var(--text);
                 border-color: #3a404b;
+            }
+
+            nav a.active {
+                background: #007bff;
+                border-color: #007bff;
+                color: #fff;
+            }
+
+            nav a.active:visited {
+                color: #fff;
             }
 
             main {
@@ -167,6 +181,14 @@
                 background: var(--line);
             }
 
+            footer a {
+                color: #00aff0;
+            }
+
+            footer a:visited {
+                color: #00aff0;
+            }
+
             @media (max-width: 700px) {
                 .gallery {
                     columns: 3 140px;
@@ -177,23 +199,29 @@
                 header {
                     padding-top: 36px;
                 }
+
                 h1 {
                     font-size: 24px;
                 }
+
                 main {
                     padding: 28px 12px 40px;
                 }
+
                 nav ul {
                     padding-left: 12px;
                     padding-right: 12px;
                 }
+
                 .gallery {
                     columns: 2 120px;
                     column-gap: 8px;
                 }
+
                 .item {
                     margin-bottom: 8px;
                 }
+
                 footer {
                     padding: 28px 18px 36px;
                 }
@@ -219,6 +247,7 @@
 
         <main>
             <p class="status" id="status">Loading artwork...</p>
+
             <div class="gallery" id="gallery"></div>
 
             <section class="comments">
@@ -246,13 +275,19 @@
 
         <footer>
             <div class="footer-grid">
-                <span> Mahyar </span>
-                <span> Under Development </span>
+                <span>Mahyar</span>
+                <span>Under Development</span>
             </div>
 
             <div class="footer-line"></div>
 
             Copyright © 2026 - <span id="year"></span> Mahyar Projects
+
+            <p>
+                This site is open source and licensed under the
+                <a href="https://opensource.org/license/mit">MIT License</a>.
+                <a href="https://github.com/Mahyar132/art">Improve this page</a>.
+            </p>
         </footer>
 
         <script>
