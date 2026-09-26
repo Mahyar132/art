@@ -284,14 +284,20 @@
             Copyright © 2026 - <span id="year"></span> Mahyar Projects
 
             <p>
-                This site is open source and licensed under the
-                <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPLv3 License</a>.
-                <a href="https://github.com/Mahyar132/art">Improve this page</a>.
+                The code for this page is licensed under the
+                <a href="https://www.gnu.org/licenses/gpl-3.0.html"> GNU GPLv3 </a>. Artwork is licensed under
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/"> CC BY-SA 4.0 </a>.
+            </p>
+
+            <p>
+                <a href="https://github.com/mahyar132/art"> Improve this page </a>.
+                <a href="https://github.com/mahyar132/art/blob/main/LICENSE-ART"> Artwork license </a>.
             </p>
         </footer>
 
         <script>
             const repo = "mahyar132/art";
+            const folder = "artwork";
             const types = /\.(jpe?g|png|webp|gif|avif|svg)$/i;
             const gallery = document.getElementById("gallery");
             const status = document.getElementById("status");
@@ -302,10 +308,12 @@
                     return r.json();
                 })
                 .then((data) => {
-                    const files = data.tree.filter((f) => f.type === "blob" && types.test(f.path));
+                    const files = data.tree.filter(
+                        (f) => f.type === "blob" && f.path.startsWith(`${folder}/`) && types.test(f.path)
+                    );
 
                     if (!files.length) {
-                        status.textContent = "No artwork found.";
+                        status.textContent = "No artwork found in the artwork folder.";
                         return;
                     }
 
@@ -331,7 +339,9 @@
                     });
                 })
                 .catch(() => {
-                    status.textContent = "Unable to load artwork.";
+                    status.innerHTML =
+                        "Unable to load artwork.<br>" +
+                        "Please check your internet connection and make sure JavaScript is enabled.";
                 });
 
             document.getElementById("year").textContent = new Date().getFullYear();
