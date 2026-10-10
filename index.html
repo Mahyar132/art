@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -120,16 +121,18 @@
                 font: 12px var(--mono);
             }
 
+            /* Grid preserves the sorted DOM order from left to right. */
             .gallery {
-                columns: 4 180px;
-                column-gap: 12px;
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 12px;
+                align-items: start;
             }
 
             .item {
                 display: block;
-                margin: 0 0 12px;
+                min-width: 0;
                 overflow: hidden;
-                break-inside: avoid;
                 background: #171a20;
                 border-radius: 4px;
             }
@@ -191,7 +194,7 @@
 
             @media (max-width: 700px) {
                 .gallery {
-                    columns: 3 140px;
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
                 }
             }
 
@@ -214,12 +217,8 @@
                 }
 
                 .gallery {
-                    columns: 2 120px;
-                    column-gap: 8px;
-                }
-
-                .item {
-                    margin-bottom: 8px;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 8px;
                 }
 
                 footer {
@@ -300,7 +299,7 @@
             const status = document.getElementById("status");
 
             function getDate(filename) {
-                const match = filename.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
+                const match = filename.match(/(?:^|[^0-9])(\d{4})-(\d{2})-(\d{2})(?=[^0-9]|$)/);
 
                 if (!match) return null;
 
@@ -319,13 +318,23 @@
             }
 
             fetch(`https://api.github.com/repos/${repo}/git/trees/HEAD?recursive=1`)
-                .then((r) => {
-                    if (!r.ok) throw new Error();
-                    return r.json();
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("GitHub API request failed");
+                    }
+
+                    return response.json();
                 })
                 .then((data) => {
+                    if (!Array.isArray(data.tree)) {
+                        throw new Error("Invalid GitHub API response");
+                    }
+
                     const files = data.tree.filter(
-                        (f) => f.type === "blob" && f.path.startsWith(`${folder}/`) && types.test(f.path)
+                        (file) =>
+                            file.type === "blob" &&
+                            file.path.startsWith(`${folder}/`) &&
+                            types.test(file.path)
                     );
 
                     files.sort((a, b) => {
@@ -335,29 +344,40 @@
                         const dateA = getDate(nameA);
                         const dateB = getDate(nameB);
 
+                        // Files with dates come first, newest date first.
                         if (dateA !== null && dateB !== null && dateA !== dateB) {
                             return dateB - dateA;
                         }
 
+                        // Files without dates come after dated files.
                         if (dateA !== null && dateB === null) return -1;
                         if (dateA === null && dateB !== null) return 1;
 
+                        // Same date, or no date: sort by filename.
                         return nameA.localeCompare(nameB, undefined, {
                             numeric: true,
                             sensitivity: "base",
                         });
                     });
 
-                    if (!files.length) {
+                    if (files.length === 0) {
                         status.textContent = "No artwork found in the artwork folder.";
                         return;
                     }
 
-                    status.textContent = `${files.length} artwork${files.length > 1 ? "s" : ""}`;
+                    status.textContent =
+                        `${files.length} artwork${files.length === 1 ? "" : "s"}`;
+
+                    const fragment = document.createDocumentFragment();
 
                     files.forEach((file) => {
                         const name = file.path.split("/").pop();
-                        const url = `https://raw.githubusercontent.com/${repo}/HEAD/${file.path}`;
+                        const encodedPath = file.path
+                            .split("/")
+                            .map((part) => encodeURIComponent(part))
+                            .join("/");
+                        const url =
+                            `https://raw.githubusercontent.com/${repo}/HEAD/${encodedPath}`;
 
                         const link = document.createElement("a");
                         link.className = "item";
@@ -372,12 +392,14 @@
                         img.loading = "lazy";
 
                         link.appendChild(img);
-                        gallery.appendChild(link);
+                        fragment.appendChild(link);
                     });
+
+                    gallery.appendChild(fragment);
                 })
                 .catch(() => {
                     status.textContent =
-                        "Unable to load artwork. Please check your internet connection and make sure JavaScript is enabled.";
+                        "Unable to load artwork. Please check your connection or try again later.";
                 });
 
             document.getElementById("year").textContent = new Date().getFullYear();
