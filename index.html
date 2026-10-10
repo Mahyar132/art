@@ -300,8 +300,22 @@
             const status = document.getElementById("status");
 
             function getDate(filename) {
-                const match = filename.match(/\d{4}-\d{2}-\d{2}/);
-                return match ? match[0] : null;
+                const match = filename.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
+
+                if (!match) return null;
+
+                const [, year, month, day] = match;
+                const date = new Date(Date.UTC(+year, +month - 1, +day));
+
+                if (
+                    date.getUTCFullYear() !== +year ||
+                    date.getUTCMonth() !== +month - 1 ||
+                    date.getUTCDate() !== +day
+                ) {
+                    return null;
+                }
+
+                return date.getTime();
             }
 
             fetch(`https://api.github.com/repos/${repo}/git/trees/HEAD?recursive=1`)
@@ -321,12 +335,12 @@
                         const dateA = getDate(nameA);
                         const dateB = getDate(nameB);
 
-                        if (dateA && dateB) {
-                            return dateB.localeCompare(dateA);
+                        if (dateA !== null && dateB !== null && dateA !== dateB) {
+                            return dateB - dateA;
                         }
 
-                        if (dateA) return -1;
-                        if (dateB) return 1;
+                        if (dateA !== null && dateB === null) return -1;
+                        if (dateA === null && dateB !== null) return 1;
 
                         return nameA.localeCompare(nameB, undefined, {
                             numeric: true,
@@ -348,8 +362,9 @@
                         const link = document.createElement("a");
                         link.className = "item";
                         link.href = url;
-                        link.download = name;
                         link.target = "_blank";
+                        link.rel = "noopener";
+                        link.download = name;
 
                         const img = document.createElement("img");
                         img.src = url;
@@ -361,9 +376,8 @@
                     });
                 })
                 .catch(() => {
-                    status.innerHTML =
-                        "Unable to load artwork.<br>" +
-                        "Please check your internet connection and make sure JavaScript is enabled.";
+                    status.textContent =
+                        "Unable to load artwork. Please check your internet connection and make sure JavaScript is enabled.";
                 });
 
             document.getElementById("year").textContent = new Date().getFullYear();
