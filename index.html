@@ -309,6 +309,8 @@
                         (f) => f.type === "blob" && f.path.startsWith(`${folder}/`) && types.test(f.path)
                     );
 
+                    files.sort((a, b) => a.path.localeCompare(b.path));
+
                     if (!files.length) {
                         status.textContent = "No artwork found in the artwork folder.";
                         return;
