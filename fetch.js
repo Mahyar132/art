@@ -1,3 +1,12 @@
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt PublicDomain
+
+/*
+Isotope Gallery Script =^w^=
+
+This file is dedicated to the public domain.
+No rights reserved.
+*/
+
 const repo = "mahyar132/art";
 const folder = "artwork";
 const types = /\.(jpe?g|png|webp|gif|avif|svg|bmp|ico)$/i;
@@ -111,3 +120,5 @@ if (!gallery || !status) {
             status.textContent = "Unable to load artwork. Please check your connection or try again later.";
         });
 }
+
+// @license-end
