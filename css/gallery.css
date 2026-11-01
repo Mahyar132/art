@@ -1,3 +1,8 @@
+/*
+This file is dedicated to the public domain.
+No rights reserved. ❤️
+*/
+
 .gallery {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
