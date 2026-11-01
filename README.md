@@ -20,6 +20,6 @@ Artwork and images in this repository are licensed under the **Creative Commons 
 
 You are free to share and adapt the artwork, including for commercial purposes, provided that appropriate credit is given to the original creator.
 
-[CC BY 4.0 Legal Code](https://creativecommons.org/licenses/by/4.0/)
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 Copyright © 2026 Mahyar Projects
