@@ -108,6 +108,25 @@ if (!gallery || !status) {
                 img.loading = "lazy";
                 img.decoding = "async";
 
+                // Handle image loading errors with automatic retries
+                let retries = 0;
+                const maxRetries = 3;
+
+                img.addEventListener("error", () => {
+                    if (retries < maxRetries) {
+                        retries++;
+
+                        console.warn(`Retrying image (${retries}/${maxRetries}): ${url}`);
+
+                        img.src = url + `?retry=${retries}`;
+                    } else {
+                        console.error(`Failed to load image after ${maxRetries} retries: ${url}`);
+
+                        img.alt = `Failed to load: ${name}`;
+                        img.classList.add("image-error");
+                    }
+                });
+
                 link.appendChild(img);
                 fragment.appendChild(link);
             });
