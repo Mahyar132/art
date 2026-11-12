@@ -98,8 +98,7 @@ if (!gallery || !status) {
                 link.className = "item";
                 link.href = url;
                 link.target = "_blank";
-                link.rel = "noopener";
-                link.download = name;
+                link.rel = "noopener noreferrer";
                 link.setAttribute("aria-label", `Open ${name}`);
 
                 const img = document.createElement("img");
@@ -110,7 +109,7 @@ if (!gallery || !status) {
 
                 // Handle image loading errors with automatic retries
                 let retries = 0;
-                const maxRetries = 3;
+                const maxRetries = 2;
 
                 img.addEventListener("error", () => {
                     if (retries < maxRetries) {
