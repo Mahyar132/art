@@ -148,3 +148,7 @@ nav ul::-webkit-scrollbar {
     background-color: var(--accent);
     border-color: var(--accent);
 }
+
+.text-info {
+    color: #00aff0 !important;
+}
